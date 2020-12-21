@@ -12,7 +12,7 @@ import optuna
 
 
 #MAIN PARAMETERS FOR THE ASSIGNMENT
-budget = 100
+budget = 50
 random_state = 0
 verbose = 0
 
@@ -147,7 +147,7 @@ summary['knn'] = summary['knn'].append(pd.Series({
 #####################################
 ######  SKOPT (BAYESIAN)  ###########
 #####################################
-'''
+
 ###3.4 Skopt (bayesian) hyper-parameter tunning
 print('Training SKOPT models')
 #3.4.1 Decission trees
@@ -203,7 +203,7 @@ summary['knn'] = summary['knn'].append(pd.Series({
     'P': knn_skopt.best_params_['p']
     }, 
     name='skopt'))
-'''
+
 #####################################
 ######  OPTUNA (BAYESIAN)  ##########
 #####################################
