@@ -9,10 +9,10 @@ from scipy.stats import uniform, randint as sp_randint
 from skopt import BayesSearchCV
 from skopt.space import Integer, Real, Categorical
 import optuna
-
+import optuna.visualization as ov
 
 #MAIN PARAMETERS FOR THE ASSIGNMENT
-budget = 50
+budget = 100
 random_state = 0
 verbose = 0
 
@@ -87,7 +87,7 @@ summary['knn'] = summary['knn'].append(pd.Series({
 ######  RANDOM SEACRH  ##############
 #####################################
 ###3.2 Random search for Decission Tree hyper-parameter tunning
-print('training RANDOM SEARCH models')
+'''print('training RANDOM SEARCH models')
 np.random.seed(random_state)
 param_grid = {
     'min_samples_split': uniform(0, 1),
@@ -203,7 +203,7 @@ summary['knn'] = summary['knn'].append(pd.Series({
     'P': knn_skopt.best_params_['p']
     }, 
     name='skopt'))
-
+'''
 #####################################
 ######  OPTUNA (BAYESIAN)  ##########
 #####################################
@@ -244,10 +244,12 @@ summary['tree'] = summary['tree'].append(pd.Series({
     },
     name='optuna'))
 #3.5.2 K Nearest Neighbours
+def my_weight(array):
+    return [1/np.exp(i) for i in array]
 np.random.seed(random_state)
 def knn_objective(trial):
     n_neighbors = trial.suggest_int('n_neighbors', min_n_neigbors, max_n_neigbors)
-    weights = trial.suggest_categorical('weights', ['uniform','distance'])
+    weights = trial.suggest_categorical('weights', ['uniform','distance', my_weight])
     p = trial.suggest_categorical('p', [1, 2])
 
     clf = neighbors.KNeighborsRegressor(
@@ -326,3 +328,11 @@ submission = pd.DataFrame(columns=['Id', 'SalePrice'])
 submission['Id'] = pd.Series(range(1461, 2920))
 submission['SalePrice'] = pd.Series(y_comp)
 submission.to_csv('submission.csv', index=False)
+
+#3.9 Optuna visualization
+ov.plot_optimization_history(knn_optuna).show()
+#ov.plot_parallel_coordinate(knn_optuna).show()
+ov.plot_contour(knn_optuna).show()
+ov.plot_slice(knn_optuna).show()
+ov.plot_param_importances(knn_optuna).show()
+#ov.plot_edf(knn_optuna).show()
