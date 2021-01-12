@@ -1,0 +1,17 @@
+'''x = data[data.columns.difference(['energy'])]
+y = data['energy']
+
+#-1 for training, 0 for validation, 1 for testing
+x_test = x[x['partition'] == ]
+#Split in subsets using holdout 2/6 for training, 2/6 validation, 2/6 for testing
+x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, train_size=(2/3), random_state=0)
+
+# -1 for training, 0 for validation 
+part = [-1, -1, 0, 0]
+random.shuffle(part)
+tr_val_partition = model_selection.PredefinedSplit(part)
+print(tr_val_partition)
+
+print('whole dataset: ', x.shape, y.shape)
+print('train partition: ', x_train.shape, y_train.shape)
+print('test partition: ', x_test.shape, y_test.shape)'''
